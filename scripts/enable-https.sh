@@ -70,6 +70,7 @@ certbot certonly \
   --webroot-path "${WEBROOT}" \
   --cert-name "${CERT_NAME}" \
   "${domain_arguments[@]}" \
+  --expand \
   --email "${EMAIL}" \
   --agree-tos \
   --non-interactive \
@@ -121,6 +122,7 @@ restore_previous_state() {
 }
 
 sed \
+  -e "s/__PRIMARY_DOMAIN__/${PRIMARY_DOMAIN}/g" \
   -e "s/__SERVER_NAME__/${SERVER_NAMES}/g" \
   -e "s/__CERT_NAME__/${CERT_NAME}/g" \
   "${HTTPS_TEMPLATE}" >"${https_candidate}"
