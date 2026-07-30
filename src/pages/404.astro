@@ -1,0 +1,32 @@
+---
+import BrandMark from '../components/BrandMark.astro';
+import { site } from '../config/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/not-found.css';
+---
+
+<BaseLayout
+  title={`页面未找到｜${site.name}`}
+  description="你访问的 ZYWLU 页面不存在或已经移动。"
+  robots="noindex, follow"
+>
+  <main class="not-found">
+    <div class="not-found__grid page-shell">
+      <a class="not-found__brand" href="/" aria-label="返回 ZYWLU 首页">
+        <BrandMark size={36} />
+        <span>ZYWLU</span>
+      </a>
+
+      <div class="not-found__code" aria-hidden="true">404</div>
+
+      <section aria-labelledby="not-found-title">
+        <p>ROUTE NOT FOUND</p>
+        <h1 id="not-found-title">这条路径，<br />还没有内容。</h1>
+        <div class="not-found__copy">
+          <p>地址可能输入有误，或者页面已经移动。你可以返回首页，继续浏览技术专题与开源项目。</p>
+          <a class="button button--primary" href="/">返回首页 →</a>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

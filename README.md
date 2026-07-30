@@ -63,8 +63,9 @@ src/
 └─ styles/              全局样式与设计令牌
 tests/                  单元与集成测试
 docs/decisions/         架构决策记录
-infra/                  后续加入的生产配置模板
-public/                 后续加入的直接发布资源
+infra/nginx/            Nginx 生产配置模板
+scripts/                可重复执行的发布与回滚脚本
+public/                 直接发布资源
 ```
 
 目录按真实需求扩展，避免仅为占位建立空目录。
@@ -80,7 +81,8 @@ public/                 后续加入的直接发布资源
 ## 构建与部署
 
 `npm run build` 生成 `dist/`。生产环境由 Ubuntu 24.04 LTS 上的 Nginx 托管该目录。
-部署脚本和 Nginx 模板将在 `infra/` 中版本化，并遵循以下流程：
+[`scripts/deploy.sh`](scripts/deploy.sh) 与 [`infra/nginx/zywlu.conf`](infra/nginx/zywlu.conf)
+提供可重复发布流程：
 
 1. 从已验证提交构建产物。
 2. 上传到新的版本目录。
@@ -89,6 +91,7 @@ public/                 后续加入的直接发布资源
 5. 保留上一健康版本用于快速回退。
 
 服务器地址、账号、域名和凭据通过部署环境注入，不进入仓库。
+具体发布、健康检查和回滚命令参见 [`docs/deployment.md`](docs/deployment.md)。
 
 ## 文档
 
