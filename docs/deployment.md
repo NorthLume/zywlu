@@ -17,7 +17,7 @@
 ```bash
 DEPLOY_HOST=HOST \
 DEPLOY_USER=root \
-DEPLOY_DOMAIN=DOMAIN \
+DEPLOY_DOMAIN="DOMAIN www.DOMAIN" \
 bash scripts/deploy.sh
 ```
 

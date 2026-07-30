@@ -28,7 +28,7 @@ if [[ ! "${DEPLOY_PORT}" =~ ^[0-9]+$ || ! "${RELEASE_ID}" =~ ^[0-9A-Za-z._-]+$ ]
   exit 2
 fi
 
-if [[ ! "${DEPLOY_DOMAIN}" =~ ^[_0-9A-Za-z.-]+$ || ! "${KEEP_RELEASES}" =~ ^[1-9][0-9]*$ ]]; then
+if [[ ! "${DEPLOY_DOMAIN}" =~ ^[_0-9A-Za-z.-]+([[:space:]]+[_0-9A-Za-z.-]+)*$ || ! "${KEEP_RELEASES}" =~ ^[1-9][0-9]*$ ]]; then
   echo "Invalid DEPLOY_DOMAIN or KEEP_RELEASES" >&2
   exit 2
 fi

@@ -7,6 +7,7 @@ describe('site metadata', () => {
     expect(site.name).toBe('ZYWLU');
     expect(site.locale).toBe('zh-CN');
     expect(site.description.trim().length).toBeGreaterThan(0);
+    expect(site.url).toBe('https://zywlu.com');
     expect(site.repository).toBe('https://github.com/NorthLume/zywlu');
   });
 });

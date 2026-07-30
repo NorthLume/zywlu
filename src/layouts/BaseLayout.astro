@@ -6,13 +6,19 @@ interface Props {
   title?: string;
   description?: string;
   robots?: string;
+  canonicalPath?: string | false;
 }
 
 const {
   title = site.title,
   description = site.description,
   robots = 'index, follow',
+  canonicalPath,
 } = Astro.props;
+const canonicalUrl =
+  canonicalPath === false
+    ? undefined
+    : new URL(canonicalPath ?? Astro.url.pathname, site.url).toString();
 ---
 
 <!doctype html>
@@ -28,7 +34,9 @@ const {
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
     <meta name="twitter:card" content="summary" />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>

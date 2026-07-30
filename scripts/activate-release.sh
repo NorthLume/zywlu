@@ -20,7 +20,7 @@ if [[ ! "${RELEASE_ID}" =~ ^[0-9A-Za-z._-]+$ ]]; then
   exit 2
 fi
 
-if [[ ! "${DOMAIN}" =~ ^[_0-9A-Za-z.-]+$ ]]; then
+if [[ ! "${DOMAIN}" =~ ^[_0-9A-Za-z.-]+([[:space:]]+[_0-9A-Za-z.-]+)*$ ]]; then
   echo "Invalid DOMAIN" >&2
   exit 2
 fi
