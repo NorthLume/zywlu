@@ -58,13 +58,22 @@ scp -P "${DEPLOY_PORT}" \
 
 if [[ "${DEPLOY_USER}" == "root" ]]; then
   REMOTE_PRIVILEGE="env"
+  REMOTE_ROOT_COMMAND=""
 else
   REMOTE_PRIVILEGE="sudo env"
+  REMOTE_ROOT_COMMAND="sudo"
 fi
 
 ssh -p "${DEPLOY_PORT}" "${SSH_TARGET}" \
   "${REMOTE_PRIVILEGE} RELEASE_ID='${RELEASE_ID}' DOMAIN='${DEPLOY_DOMAIN}' KEEP_RELEASES='${KEEP_RELEASES}' ARCHIVE='${REMOTE_STAGE}/$(basename "${ARCHIVE}")' NGINX_TEMPLATE='${REMOTE_STAGE}/zywlu.conf' ROLLBACK_SCRIPT='${REMOTE_STAGE}/rollback-release.sh' bash '${REMOTE_STAGE}/activate-release.sh'"
 
 HEALTH_URL="${HEALTH_URL:-http://${DEPLOY_HOST}/}"
-curl --fail --silent --show-error --max-time 15 "${HEALTH_URL}" >/dev/null
+if ! curl --fail --silent --show-error --max-time 15 "${HEALTH_URL}" >/dev/null; then
+  echo "Deployment health check failed; rolling back ${RELEASE_ID}" >&2
+  ssh -p "${DEPLOY_PORT}" "${SSH_TARGET}" \
+    "${REMOTE_ROOT_COMMAND} /usr/local/sbin/zywlu-rollback"
+  exit 1
+fi
+
+ssh -p "${DEPLOY_PORT}" "${SSH_TARGET}" "rm -rf -- '${REMOTE_STAGE}'"
 echo "Deployment healthy: ${HEALTH_URL} (${RELEASE_ID})"
