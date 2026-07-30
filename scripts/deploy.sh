@@ -53,6 +53,7 @@ scp -P "${DEPLOY_PORT}" \
   "${ARCHIVE}" \
   infra/nginx/zywlu.conf \
   scripts/activate-release.sh \
+  scripts/rollback-release.sh \
   "${SSH_TARGET}:${REMOTE_STAGE}/"
 
 if [[ "${DEPLOY_USER}" == "root" ]]; then
@@ -62,7 +63,7 @@ else
 fi
 
 ssh -p "${DEPLOY_PORT}" "${SSH_TARGET}" \
-  "${REMOTE_PRIVILEGE} RELEASE_ID='${RELEASE_ID}' DOMAIN='${DEPLOY_DOMAIN}' KEEP_RELEASES='${KEEP_RELEASES}' ARCHIVE='${REMOTE_STAGE}/$(basename "${ARCHIVE}")' NGINX_TEMPLATE='${REMOTE_STAGE}/zywlu.conf' bash '${REMOTE_STAGE}/activate-release.sh'"
+  "${REMOTE_PRIVILEGE} RELEASE_ID='${RELEASE_ID}' DOMAIN='${DEPLOY_DOMAIN}' KEEP_RELEASES='${KEEP_RELEASES}' ARCHIVE='${REMOTE_STAGE}/$(basename "${ARCHIVE}")' NGINX_TEMPLATE='${REMOTE_STAGE}/zywlu.conf' ROLLBACK_SCRIPT='${REMOTE_STAGE}/rollback-release.sh' bash '${REMOTE_STAGE}/activate-release.sh'"
 
 HEALTH_URL="${HEALTH_URL:-http://${DEPLOY_HOST}/}"
 curl --fail --silent --show-error --max-time 15 "${HEALTH_URL}" >/dev/null

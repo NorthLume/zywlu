@@ -8,6 +8,7 @@ set -Eeuo pipefail
 
 DOMAIN="${DOMAIN:-_}"
 KEEP_RELEASES="${KEEP_RELEASES:-3}"
+ROLLBACK_SCRIPT="${ROLLBACK_SCRIPT:-}"
 APP_ROOT="/var/www/zywlu"
 RELEASES_DIR="${APP_ROOT}/releases"
 RELEASE_DIR="${RELEASES_DIR}/${RELEASE_ID}"
@@ -36,6 +37,11 @@ fi
 
 if [[ ! -f "${ARCHIVE}" || ! -f "${NGINX_TEMPLATE}" ]]; then
   echo "Release archive or Nginx template is missing" >&2
+  exit 2
+fi
+
+if [[ -n "${ROLLBACK_SCRIPT}" && ! -f "${ROLLBACK_SCRIPT}" ]]; then
+  echo "Rollback script is missing" >&2
   exit 2
 fi
 
@@ -131,6 +137,10 @@ if ! systemctl enable --now nginx || ! systemctl reload nginx; then
   rm -f -- "${nginx_backup}"
   echo "Nginx start or reload failed" >&2
   exit 5
+fi
+
+if [[ -n "${ROLLBACK_SCRIPT}" ]]; then
+  install -m 0755 "${ROLLBACK_SCRIPT}" /usr/local/sbin/zywlu-rollback
 fi
 
 rm -f -- "${nginx_backup}"

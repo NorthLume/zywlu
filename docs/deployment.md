@@ -36,10 +36,10 @@ ssh root@HOST 'systemctl is-active nginx && nginx -t'
 
 ## 回滚
 
-将版本化脚本上传到服务器后执行：
+部署脚本会把版本化回滚命令安装到服务器，执行：
 
 ```bash
-sudo bash scripts/rollback-release.sh
+sudo zywlu-rollback
 ```
 
 回滚脚本交换 `current` 与 `previous` 链接，执行 `nginx -t` 后平滑重载。完成后重新运行发布后检查。
