@@ -47,4 +47,17 @@ sudo zywlu-rollback
 
 ## HTTPS
 
-域名解析生效后，使用 Certbot 为 Nginx 申请证书并启用自动续期。证书签发前保留 HTTP 配置，避免预先强制 HTTPS。
+域名解析生效后，上传 HTTPS 模板与启用脚本并执行：
+
+```bash
+sudo env \
+  PRIMARY_DOMAIN=DOMAIN \
+  SERVER_NAMES="DOMAIN www.DOMAIN" \
+  CERTIFICATE_DOMAINS="DOMAIN www.DOMAIN" \
+  CERT_NAME=DOMAIN \
+  EMAIL=EMAIL \
+  HTTPS_TEMPLATE=/tmp/zywlu-https.conf \
+  bash scripts/enable-https.sh
+```
+
+脚本使用 Webroot 方式签发证书，安装 HTTPS 站点与 HTTP `308` 跳转，启用 `certbot.timer`，安装续期后的 Nginx 平滑重载钩子，并执行一次模拟续期。

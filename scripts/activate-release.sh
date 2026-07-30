@@ -50,7 +50,11 @@ if ! command -v nginx >/dev/null 2>&1; then
   DEBIAN_FRONTEND=noninteractive apt-get install -y nginx
 fi
 
-install -d -m 0755 "${APP_ROOT}" "${RELEASES_DIR}"
+install -d -m 0755 \
+  "${APP_ROOT}" \
+  "${RELEASES_DIR}" \
+  /etc/nginx/zywlu-http-enabled \
+  /var/lib/letsencrypt/.well-known/acme-challenge
 
 if [[ ! -d "${RELEASE_DIR}" ]]; then
   rm -rf -- "${STAGING_DIR}"
