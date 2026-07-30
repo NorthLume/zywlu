@@ -1,0 +1,22 @@
+---
+interface Props {
+  size?: number;
+  title?: string;
+}
+
+const { size = 40, title } = Astro.props;
+---
+
+<svg
+  class="brand-mark"
+  width={size}
+  height={size}
+  viewBox="0 0 48 48"
+  role={title ? 'img' : undefined}
+  aria-hidden={title ? undefined : 'true'}
+  focusable="false"
+>
+  {title && <title>{title}</title>}
+  <rect width="48" height="48" rx="3" fill="currentColor"></rect>
+  <path d="M11 11h26v8L24 29h13v8H11v-8l13-10H11z" fill="#ff5a36"></path>
+</svg>
