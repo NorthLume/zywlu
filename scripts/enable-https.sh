@@ -153,7 +153,11 @@ chmod 0755 /etc/letsencrypt/renewal-hooks/deploy/zywlu-nginx
 systemctl enable --now certbot.timer
 
 if [[ "${DRY_RUN_RENEWAL}" == "true" ]]; then
-  certbot renew --cert-name "${CERT_NAME}" --dry-run --non-interactive
+  certbot renew \
+    --cert-name "${CERT_NAME}" \
+    --dry-run \
+    --non-interactive \
+    --no-random-sleep-on-renew
 fi
 
 rm -f -- "${https_candidate}" "${redirect_candidate}" "${https_backup}" "${redirect_backup}"
