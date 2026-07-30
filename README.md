@@ -48,6 +48,7 @@ npm run dev
 | `npm run typecheck`    | 执行 Astro 与 TypeScript 检查  |
 | `npm run test`         | 运行单元测试                   |
 | `npm run build`        | 生成生产静态产物到 `dist/`     |
+| `npm run verify:build` | 检查产物与生产 CSP 的兼容性    |
 | `npm run preview`      | 本地预览生产构建               |
 | `npm run check`        | 依次执行全部质量门槛与生产构建 |
 
